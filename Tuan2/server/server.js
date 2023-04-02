@@ -36,7 +36,7 @@ connectDB.connect(handleConnection);
 app.get('/get-all-farms', function (req, res) {
     try {
         connectDB.query(
-            'SELECT * FROM thcntt3.farms',
+            'SELECT * FROM thcntt3.electronics',
             (err, result, fields) => {
                 if (err) {
                     res.send(err);
@@ -50,6 +50,35 @@ app.get('/get-all-farms', function (req, res) {
         res.send(err);
     }
 })
+
+app.put('/update-farm', function (req, res) {
+    try {
+        let body = req.body;
+        connectDB.query(
+            `
+                UPDATE \`thcntt3\`.\`electronics\` 
+                SET 
+                    \`name\` = '${body.name}' 
+                    \`description\` = '${body.description}' 
+                    \`isTurnOn\` = '${body.isTurnOn}' 
+                    \`class\` = '${body.class}',
+                WHERE (\`id\` = '${body.id}');
+            `,
+            (err, result, fields) => {
+                if (err) {
+                    res.send(err);
+                    return;
+                };
+
+                res.send(result);
+            });
+    }
+    catch (err) {
+        res.send(err);
+    }
+
+})
+
 
 //server
 const server = app.listen(5555, function () {

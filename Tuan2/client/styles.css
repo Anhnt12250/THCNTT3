@@ -1,10 +1,19 @@
+:root {
+
+    --switch-color: #2196F3;
+    --switch-handle-color: #fff;
+    --switch-height: 24px;
+    --switch-width: 40px;
+    --switch-transition: 0.1s;
+}
+
 p,
 h2 {
     margin: 0px
 }
 
 .header {
-    background-color: orange;
+    background-color: rgb(27, 202, 255);
     height: 100px;
     text-align: center;
     display: flex;
@@ -12,7 +21,7 @@ h2 {
 }
 
 .footer {
-    background-color: orange;
+    background-color: rgb(27, 202, 255);
     height: 100px;
     text-align: center;
     display: flex;
@@ -27,4 +36,67 @@ h2 {
 
 .details {
     list-style: none;
+}
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: var(--switch-width);
+    height: var(--switch-height);
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+
+    height: calc(var(--switch-height) - 8px);
+    width: calc(var(--switch-height) - 8px);
+    left: 4px;
+    bottom: 4px;
+
+    background-color: var(--switch-handle-color);
+    -webkit-transition: var(--switch-transition);
+    transition: var(--switch-transition);
+}
+
+input:checked+.slider {
+    background-color: var(--switch-color);
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px var(--switch-color);
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(calc(var(--switch-width) - var(--switch-height)));
+    -ms-transform: translateX(calc(var(--switch-width) - var(--switch-height)));
+    transform: translateX(calc(var(--switch-width) - var(--switch-height)));
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: var(--switch-height);
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }

@@ -1,29 +1,55 @@
+gSwitch = {}
+
+turnSwitch = (object) => {
+    $.ajax({
+        type: 'PUT',
+        contentType: "application/json",
+        dataType: 'json',
+        url: 'http://localhost:5555/update-farm',
+        data: JSON.stringify({
+            id: object.id,
+            name: object.name,
+            description: object.description,
+            isTurnOn: object.isTurnOn,
+            class: object.class
+        }),
+    })
+}
+
 addFarm = (data) => {
     var str = "";
-    $.each(data, (i, item) => {
-        console.log(item);
 
+    data.forEach(item => {
         str += `
             <div class="col-md-4 device">
-                <img class="img-thumbnail" src="./assets/${item.image}" />
-                <h5>${item.name}</h5>
+                <h5>
+                    <span>
+                        <i class="${item.class}"></i>
+                        ${item.name}
+                    </span>
+                </h5>
                 <p>${item.description}</p>
-                <ul class="details">
-                    <li>
-                        <span style="font-size: 32px; color: red;">
-                            <i class="fas fa-temperature-high"></i>${item.temperature}
-                        </span>
-                        <br>
-                        <span style="font-size: 32px; color: blue;">
-                            <i class="fas fa-water"></i>${item.humidity}
-                        </span>
-                    </li>
-                </ul>
-                <a href="#" class="btn btn-primary btn-sm" >Details</a>
+                <label class="switch" id="item-${item.id}">
+                    <input type="checkbox" ${item.isTurnOn == 1 ? 'checked' : ''}>
+                    <span class="slider round"></span>
+                </label>
             </div>
             `
     })
-    $("#farms").html(str);
+
+    const farms = document.querySelector("#farms");
+    farms.innerHTML = str;
+
+
+}
+
+addSwitch = (data) => {
+    data.forEach(item => {
+        gSwitch[item.id] = document.querySelector(`#item-${item.id}`);
+        gSwitch[item.id].addEventListener('click', () => {
+            turnSwitch(item);
+        })
+    })
 }
 
 loadFarms = () => {
@@ -32,10 +58,14 @@ loadFarms = () => {
         contentType: "application/json",
         dataType: 'json',
         url: 'http://localhost:5555/get-all-farms',
-        success: (data) => addFarm(data),
+        success: (data) => {
+            addFarm(data)
+            addSwitch(data)
+        },
         error: () => alert("Can't load data")
     })
 }
+
 
 $(document).ready(function () {
     loadFarms();
