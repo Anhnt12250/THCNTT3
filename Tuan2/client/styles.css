@@ -1,0 +1,30 @@
+p,
+h2 {
+    margin: 0px
+}
+
+.header {
+    background-color: orange;
+    height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.footer {
+    background-color: orange;
+    height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.main {
+    height: 800px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.details {
+    list-style: none;
+}
