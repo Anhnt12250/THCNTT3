@@ -1,6 +1,5 @@
-gSwitch = {}
 
-turnSwitch = (object) => {
+turnSwitch = (object, event) => {
     $.ajax({
         type: 'PUT',
         contentType: "application/json",
@@ -13,7 +12,16 @@ turnSwitch = (object) => {
             isTurnOn: object.isTurnOn,
             class: object.class
         }),
+        success: () => {
+            let tempInput = document.querySelector(`#input-${object.id}`);
+            tempInput.checked = object.isTurnOn == 1 ? true : false;
+        },
+        error: () => alert("Can't load data")
     })
+
+
+    event.preventDefault();
+    event.stopPropagation();
 }
 
 addFarm = (data) => {
@@ -30,7 +38,7 @@ addFarm = (data) => {
                 </h5>
                 <p>${item.description}</p>
                 <label class="switch" id="item-${item.id}">
-                    <input type="checkbox" ${item.isTurnOn == 1 ? 'checked' : ''}>
+                    <input id="input-${item.id}" type="checkbox" ${item.isTurnOn == 1 ? 'checked' : ''}>
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -39,16 +47,15 @@ addFarm = (data) => {
 
     const farms = document.querySelector("#farms");
     farms.innerHTML = str;
-
-
 }
 
 addSwitch = (data) => {
     data.forEach(item => {
-        gSwitch[item.id] = document.querySelector(`#item-${item.id}`);
-        gSwitch[item.id].addEventListener('click', () => {
-            turnSwitch(item);
-        })
+        temp = document.querySelector(`#item-${item.id}`);
+        temp.addEventListener('click', (e) => {
+            item.isTurnOn = item.isTurnOn == 1 ? 0 : 1;
+            turnSwitch(item, e);
+        }, false)
     })
 }
 

@@ -54,16 +54,16 @@ app.get('/get-all-farms', function (req, res) {
 app.put('/update-farm', function (req, res) {
     try {
         let body = req.body;
-        connectDB.query(
-            `
-                UPDATE \`thcntt3\`.\`electronics\` 
-                SET 
-                    \`name\` = '${body.name}' 
-                    \`description\` = '${body.description}' 
-                    \`isTurnOn\` = '${body.isTurnOn}' 
-                    \`class\` = '${body.class}',
-                WHERE (\`id\` = '${body.id}');
-            `,
+        let createQuery = `
+            UPDATE \`thcntt3\`.\`electronics\` 
+            SET 
+                \`name\` = '${body.name}',
+                \`description\` = '${body.description}',
+                \`isTurnOn\` = '${body.isTurnOn}',
+                \`class\` = '${body.class}'
+            WHERE (\`id\` = '${body.id}');
+        `.replace(/\s\s+/g, ' ').trim();
+        connectDB.query(createQuery,
             (err, result, fields) => {
                 if (err) {
                     res.send(err);
