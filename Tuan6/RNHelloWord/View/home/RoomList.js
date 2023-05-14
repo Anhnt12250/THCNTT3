@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import axios from "axios";
 
 export default function RoomList({ navigation }) {
@@ -30,35 +30,40 @@ export default function RoomList({ navigation }) {
             <View>
                 <Room
                     name="Living Room"
-                    description="This is a Living Room"
+                    img={require('../../assets/icon.png')}
                     routeName="living"
-                    navigate={navigate} />
+                    navigate={navigate}
+                />
 
                 <Room
                     name="Kitchen"
-                    description="This is a Kitchen"
+                    img={require('../../assets/icon.png')}
                     routeName="kitchen"
-                    navigate={navigate} />
+                    navigate={navigate}
+                />
 
                 <Room
                     name="Bedroom"
-                    description="This is a Bedroom"
+                    img={require('../../assets/icon.png')}
                     routeName="bed"
-                    navigate={navigate} />
+                    navigate={navigate}
+                />
             </View>
         </View>
     );
 }
 
 function Room(props) {
-    const { name, description, routeName, navigate } = props;
+    const { name, img, routeName, navigate, navigation } = props;
 
     return (
         <View style={styles.element}>
-            <Text style={styles.title}>{name}</Text>
-            <Button
-                title={description}
-                onPress={() => navigate(routeName)} />
+            <TouchableOpacity style={styles.btn} onPress={() => { navigate(routeName) }}>
+                <Image source={img} style={styles.image} />
+                <View style={styles.absoluteView}>
+                    <Text>{name}</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -77,5 +82,23 @@ const styles = StyleSheet.create({
     title: {
         fontSize: '1.5rem',
         fontWeight: 'bold'
+    },
+
+    absoluteView: {
+        flex: 1,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent'
+    },
+
+    btn: {
+        width: 30,
+        height: 30,
+    },
+
+    image: {
+        width: "100%",
+        height: "100%",
     }
 });

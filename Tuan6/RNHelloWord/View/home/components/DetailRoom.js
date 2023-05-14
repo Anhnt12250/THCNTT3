@@ -8,6 +8,7 @@ export default function DetailRoom({ route, navigation }) {
     const [room, setRoom] = useState({});
 
     useEffect(() => {
+        navigation.setOptions({ title: name });
         get(name, setRoom);
     }, [])
 

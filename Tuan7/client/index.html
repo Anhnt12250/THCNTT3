@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>List of devices</h1>
+        <div class="list-device" id="list-devices">
+
+        </div>
+        <div>
+            <button id="add-device" class="btn filled">Add device</button>
+        </div>
+    </div>
+
+    <dialog id="dialog-update" class="dialog-update">
+        <div>
+            <label for="name" class="label">
+                <span class="span-label">Name:</span>
+                <input name="name" id="name" type="text" class="input">
+            </label>
+        </div>
+        <div>
+            <label for="type" class="label">
+                <span class="span-label">Type:</span>
+                <input name="type" id="type" type="text" class="input">
+            </label>
+        </div>
+        <div>
+            <label for="description" class="label">
+                <span class="span-label">Description:</span>
+                <input name="description" id="description" type="text" class="input">
+            </label>
+        </div>
+        <div class="dialog-action">
+            <button id="cancel" class="btn outlined">Cancel</button>
+            <button id="update" class="btn filled">Update</button>
+            <button id="create" class="btn filled">Create</button>
+        </div>
+    </dialog>
+
+    <script src="./index.js"></script>
+</body>
+
+</html>
