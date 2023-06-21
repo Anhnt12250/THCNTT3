@@ -1,10 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const listUsers = {
-    "E4 20 24 2A": { name: "Nguyễn Văn A" },
-    "59 A0 B7 B8": { name: "Nguyễn Văn B" },
-}
-
 export const storageConfig = {
     size: 10000,
     storageBackend: AsyncStorage,

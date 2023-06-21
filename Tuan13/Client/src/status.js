@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function Status({ user }) {
     return (
@@ -7,6 +7,12 @@ export default function Status({ user }) {
             <Text style={styles.text}>
                 {user.name} - {user.status ? "ONLINE" : "OFFLINE"}
             </Text>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => { user.callbackDelete() }}
+            >
+                <Text style={styles.text}>Delete</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -15,7 +21,7 @@ const styles = StyleSheet.create({
     box: {
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-between",
         alignItems: "center",
 
         padding: 10,
@@ -27,6 +33,7 @@ const styles = StyleSheet.create({
     text: {
         color: "#fff",
         fontSize: 20,
+        lineHeight: 20,
     },
     red: {
         shadowColor: "#FF4F2A",
@@ -45,5 +52,14 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
+    },
+    button: {
+        borderRadius: 10,
+        padding: 15,
+        textAlign: "center",
+        elevation: 2,
+        marginLeft: 20,
+
+        backgroundColor: "#555",
     },
 })
