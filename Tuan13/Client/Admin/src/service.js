@@ -1,6 +1,10 @@
 export class MQTT {
     constructor(options) {
-        this.topic = "hntt/thcntt3/rfid";
+        this.topic = [
+            "hntt/thcntt3/rfid/admin",
+            "hntt/thcntt3/rfid/admin/register",
+            "hntt/thcntt3/rfid/admin/delete",
+        ];
         this.client = new Paho.MQTT.Client(options.host, options.port, options.path);
     }
 
@@ -30,6 +34,15 @@ export class MQTT {
     }
 
     subscribeTopic = () => {
-        this.client.subscribe(this.topic, { qos: 1 });
+        this.topic.forEach((topic) => {
+            this.client.subscribe(topic, { qos: 1 });
+        })
     };
+
+    publishMessage = (topic, message) => {
+        console.log(`Publishing "${message}"... on topic ${topic}`);
+        const messageObject = new Paho.MQTT.Message(message);
+        messageObject.destinationName = topic;
+        this.client.send(messageObject);
+    }
 }

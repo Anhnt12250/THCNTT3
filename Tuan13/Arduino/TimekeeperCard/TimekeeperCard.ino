@@ -3,8 +3,8 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define ssid ""
-#define password ""
+#define ssid "VU"
+#define password "0933261747"
 
 // MQTT Broker Information
 #define mqtt_domain "broker.emqx.io"
@@ -17,6 +17,7 @@
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 // LED
+#define CanRead D0
 #define WaitingLED D1
 #define SuccessfulLED D2
 
@@ -27,6 +28,7 @@ void initializePinMode()
 {
   Serial.println("\nInitialize PinMode");
 
+  pinMode(CanRead, INPUT);
   pinMode(WaitingLED, OUTPUT);
   pinMode(SuccessfulLED, OUTPUT);
 
@@ -169,6 +171,10 @@ void loop()
     reconnect();
   }
 
-  processRFID();
+  if (digitalRead(CanRead))
+  {
+    processRFID();
+  }
+
   client.loop();
 }

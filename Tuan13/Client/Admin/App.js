@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Modal, StyleSheet, Pressable, TextInput } from "react-native";
-import { initializeApp } from 'firebase/app';
-import { getFirestore, onSnapshot, collection, getDocs, getDoc, updateDoc, doc, setDoc, deleteDoc } from 'firebase/firestore';
-
 import init from "react_native_mqtt";
+
 import Status from "./src/status";
 
 import { MQTT } from "./src/service";
-import { storageConfig, mqttOptions, firebaseConfig } from "./src/config";
+import { mqttOptions, storageConfig } from "./src/config";
 
 init(storageConfig);
-export const mqtt = new MQTT(mqttOptions);
 
-export const firebaseApp = initializeApp(firebaseConfig);
-export const firebaseDB = getFirestore(firebaseApp);
-export const usersCollection = collection(firebaseDB, 'users');
+export const mqtt = new MQTT(mqttOptions);
+const serverAPI = "http://localhost:5555/"
 
 const App = () => {
   const [users, setUsers] = useState([]);
-  const [rfid, setRFID] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
   const [text, setText] = useState("");
@@ -26,48 +21,31 @@ const App = () => {
   useEffect(() => {
     mqtt.connect();
     mqtt.setOnMessageArrived(onMessageArrived);
+
     getUsers();
-
-    onSnapshot(usersCollection, (querySnapshot) => {
-      let tempUsers = querySnapshot.docs.map(doc => {
-        return {
-          ...doc.data(),
-          callbackDelete: async () => { await deleteDoc(doc.ref); }
-        }
-      });
-      setUsers(tempUsers);
-    })
-
   }, []);
 
   const onMessageArrived = async (m) => {
-    let tempRFID = m.payloadString;
-    setRFID(tempRFID);
-    const targetDoc = doc(firebaseDB, 'users', tempRFID);
-
-    getDoc(targetDoc).then(async (docSnap) => {
-      let infoUser = docSnap.data();
-
-      if (docSnap.exists()) {
-        await updateDoc(targetDoc, { status: !infoUser.status });
-      } else {
-        setModalVisible(!modalVisible);
-      }
-    })
+    getUsers();
   }
 
   const getUsers = async () => {
-    const querySnapshot = await getDocs(usersCollection);
-    let tempUsers = querySnapshot.docs.map(doc => doc.data());
-    setUsers(tempUsers);
+    const response = await fetch(serverAPI + "users/");
+    const tempUsers = await response.json();
+    setUsers(tempUsers.map((user) => {
+      user.callbackDelete = () => {
+        mqtt.publishMessage("hntt/thcntt3/rfid/admin/delete", user.rfid);
+      }
+      return user;
+    }));
   }
 
   const handleOnCloseModal = () => {
     setModalVisible(!modalVisible);
 
-    if (text === '') return;
-    const targetDoc = doc(firebaseDB, 'users', rfid);
-    setDoc(targetDoc, { name: text, rfid, status: false }).then(() => { setText(''); });
+    // if (text === '') return;
+    // const targetDoc = doc(firebaseDB, 'users', rfid);
+    // setDoc(targetDoc, { name: text, rfid, status: false }).then(() => { setText(''); });
   }
 
   return (
