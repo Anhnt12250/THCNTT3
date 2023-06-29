@@ -35,8 +35,10 @@ export const mqttOnMessage = (mqtt, topic, payload) => {
             updateUserStatus(payloadString).then((result) => {
                 if (result !== null) {
                     mqtt.publish(topicRFIDApp + "/response", "Updated user", { qos: 1 }, null)
+                    mqtt.publish(topicAdmin, payloadString, { qos: 1 }, null)
                 } else {
                     mqtt.publish(topicRFIDApp + "/response", "User not registered", { qos: 1 }, null)
+                    mqtt.publish(topicAdmin, payloadString, { qos: 1 }, null)
                 }
             });
             break;

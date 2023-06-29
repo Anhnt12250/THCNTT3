@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 const registeredUsers = {
     "E4 20 24 2A": "Nguyen Van A",
     "59 A0 B7 B8": "Nguyen Van B",
+    "D4 BD 28 2A": "Nguyen Van C"
 }
 
 export const getUser = async (rfid) => {
